@@ -79,13 +79,14 @@ public class ChannelContentHelper {
 
         private Long addChannel(Context context, ChannelContents channelContents) {
             String inputId = createInputId(context);
+            // 1.创建Channel通道
             Channel channel = new Channel.Builder()
                     .setDisplayName(channelContents.getCategory())
                     .setDescription(channelContents.getDescription())
                     .setType(TvContractCompat.Channels.TYPE_PREVIEW)
                     // 通道输入ID，不知道是啥，可为空
                     .setInputId(inputId)
-                    // 1.点击MainScreen左边上的分类，跳转
+                    // 1.1点击MainScreen左边上的分类，跳转
                     .setAppLinkIntentUri(null)
                     .setInternalProviderId(channelContents.getChannelId())
                     .build();
