@@ -80,6 +80,7 @@ public class ChannelContentHelper {
         private Long addChannel(Context context, ChannelContents channelContents) {
             String inputId = createInputId(context);
             // 1.创建Channel通道
+
             Channel channel = new Channel.Builder()
                     .setDisplayName(channelContents.getCategory())
                     .setDescription(channelContents.getDescription())
@@ -87,7 +88,7 @@ public class ChannelContentHelper {
                     // 通道输入ID，不知道是啥，可为空
                     .setInputId(inputId)
                     // 1.1点击MainScreen左边上的分类，跳转
-                    .setAppLinkIntentUri(null)
+                    .setAppLinkIntent(context.getPackageManager().getLaunchIntentForPackage(context.getPackageName()))
                     .setInternalProviderId(channelContents.getChannelId())
                     .build();
 
@@ -106,11 +107,14 @@ public class ChannelContentHelper {
             /**
              * 3.在MainScreen上左侧显示的图标
              */
-             createChannelLogo(context, channelId, R.drawable.logo);
+            createChannelLogo(context, channelId, R.drawable.logo);
 
             List<Videos> videosList = channelContents.getVideos();
             for (Videos clip : videosList) {
                 String clipId = clip.getVideoId();
+
+                Intent programIntent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+                programIntent.putExtra("clipId", clipId);
 
                 PreviewProgram program = new PreviewProgram.Builder()
                         .setChannelId(channelId)
@@ -118,7 +122,7 @@ public class ChannelContentHelper {
                         .setDescription(clip.getDescription())
                         .setPosterArtUri(Uri.parse(clip.getCard()))
                         // 4.点击MainScreen上的节目，跳转播放
-                        .setIntentUri(null)
+                        .setIntent(programIntent)
                         // 5.预览，MainScreen选中的时候能自动播放
                         .setPreviewVideoUri(Uri.parse(clip.getPreview()))
                         .setInternalProviderId(clipId)
