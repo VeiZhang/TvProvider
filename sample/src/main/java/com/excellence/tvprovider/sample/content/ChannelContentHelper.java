@@ -137,16 +137,14 @@ public class ChannelContentHelper {
         }
 
         private void addProgramAction(Context context, long channelId, List<Videos> videosList) {
-//            int result = context.getContentResolver().delete(TvContractCompat.buildChannelUri(channelId), null, null);
-//            if (result < 1) {
-//                Log.e(TAG, "addProgramAction: clear failed ");
-//            }
+            int result = context.getContentResolver().delete(TvContractCompat.buildPreviewProgramsUriForChannel(channelId), null, null);
+            if (result < 1) {
+                Log.i(TAG, "addProgramAction: empty list");
+            } else {
+                Log.i(TAG, "addProgramAction: clear");
+            }
 
-//            Cursor cursor = context.getContentResolver().query(TvContractCompat.buildChannelUri(channelId), null, null, null);
-//            if (cursor != null && cursor.moveToNext()) {
-//                deletePrograms(channelId, videosList);
             addPrograms(context, channelId, videosList);
-//            }
         }
 
         private void addPrograms(Context context, long channelId, List<Videos> videosList) {
@@ -179,10 +177,6 @@ public class ChannelContentHelper {
                     long programId = ContentUris.parseId(programUri);
                 }
             }
-        }
-
-        private void deletePrograms(long channelId, List<Videos> videosList) {
-
         }
 
         /**
